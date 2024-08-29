@@ -9,8 +9,10 @@ const Category = () => {
     const { categoryProducts, fetchProducts } = useContext(Context);
 
     useEffect(() => {
-        fetchProducts({ type: "category", id });
-    }, [id, fetchProducts]);
+        fetchProducts({ type: "category", id }
+        );
+        console.log("cat"+id)
+    }, []);
 
 
 

@@ -12,7 +12,7 @@ const Home = () => {
     
         useEffect(() => {
             fetchProducts({ type: "home" });
-        }, [fetchProducts]);
+        }, []);
     
     
     

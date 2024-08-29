@@ -4,8 +4,8 @@ import { useLocation } from "react-router-dom";
 import { db } from "../FireBase/firebase"; // Import Firebase configuration
 import { getFirestore, collection, query, where, getDocs } from "firebase/firestore";
 
-
 export const Context = createContext();
+
 
 const AppContext = ({ children }) => {
     const [categories, setCategories] = useState([]);
@@ -57,6 +57,7 @@ const AppContext = ({ children }) => {
     // The main function that fetches products
     const fetchProducts = async ({ type, id, productId }) => {
         console.log(id);
+        console.log(type);
         try {
             let productsQuery;
 
@@ -89,7 +90,7 @@ const AppContext = ({ children }) => {
             console.error("Error fetching products:", error);
         }
     };
-    
+    // console.log(categoryProducts);
 
     const handleAddToCart = (product, quantity) => {
         let items = [...cartItems];
@@ -133,12 +134,12 @@ const AppContext = ({ children }) => {
                 categoryTitle,
                 cartItems,
                 setCartItems,
-                // handleAddToCart,
+                handleAddToCart,
                 cartCount,
-                // handleRemoveFromCart,
+                handleRemoveFromCart,
                 showCart,
                 setShowCart,
-                // handleCartProductQuantity,
+                handleCartProductQuantity,
                 cartSubTotal,
             }}
         >
