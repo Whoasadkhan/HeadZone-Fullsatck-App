@@ -1,24 +1,37 @@
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../../../utils/context";
+import SkeletonCategory from "./SkeletonCategory/SkeletonCategory";
 import "./Category.scss";
 
-const Category = ({ categories }) => {
+const Category = () => {
+    const { categories } = useContext(Context);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        if (categories.length > 0) {
+            setLoading(false);
+        }
+    }, [categories]);
+
     const navigate = useNavigate();
+    
+
     return (
         <div className="shop-by-category">
             <div className="categories">
-                {categories?.data?.map((item) => (
+                {loading ? (Array(4).fill(<SkeletonCategory />))
+                :
+                   ( categories.map((item) => (
                     <div
                         key={item.id}
                         className="category"
-                        onClick={() => navigate(`/category/${item.id}`)}
+                        onClick={() => navigate(`/category/${item.title}`)}
                     >
                         <img
-                            src={
-                                process.env.REACT_APP_STRIPE_APP_DEV_URL +
-                                item.attributes.img.data.attributes.url
-                            }
+                            src={item.image} 
+                            alt={item.title} 
                         />
-                    </div>
+                    </div>)
                 ))}
             </div>
         </div>

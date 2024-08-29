@@ -1,19 +1,21 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Product.scss";
+import { TbH1 } from "react-icons/tb";
 
 const Product = ({ data, id }) => {
     const navigate = useNavigate();
     return (
+
+        
         <div
             className="product-card"
-            onClick={() => navigate("/product/" + id)}
+            onClick={() => navigate("/product/" + data.title)}
         >
             <div className="thumbnail">
                 <img
                     src={
-                        process.env.REACT_APP_STRIPE_APP_DEV_URL +
-                        data.image.data[0].attributes.url
+                       data.image
                     }
                 />
             </div>
@@ -22,6 +24,7 @@ const Product = ({ data, id }) => {
                 <span className="price">&#8377;{data.price}</span>
             </div>
         </div>
+        
     );
 };
 
