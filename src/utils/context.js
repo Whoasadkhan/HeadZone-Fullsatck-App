@@ -80,7 +80,6 @@ const AppContext = ({ children }) => {
         );
       } else if (type === "relatedProducts" && categoryId) {
         // Fetch products by relatedcategory
-        // Fetch products by related category
         console.log("Fetching related products for category:", categoryId);
         productsQuery = query(
           collection(db, "products"),
@@ -123,8 +122,7 @@ const AppContext = ({ children }) => {
       console.error("Error fetching products:", error);
     }
   };
-  console.log(relatedProducts);
-  console.log(singleProduct);
+  console.log(homeProducts);
 
   const handleAddToCart = (product, quantity) => {
     let items = [...cartItems];

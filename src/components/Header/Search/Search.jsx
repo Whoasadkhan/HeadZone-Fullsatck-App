@@ -1,24 +1,34 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { MdClose } from "react-icons/md";
 import "./Search.scss";
-import useFetch from "../../../hooks/useFetch";
 import { useNavigate } from "react-router-dom";
+import { Context } from "../../../utils/context";
 
 const Search = ({ setSearchModal }) => {
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
-
+    const {homeProducts} = useContext(Context);
+    
     const onChange = (e) => {
         setQuery(e.target.value);
     };
 
-    let { data } = useFetch(
-        `/api/products?populate=*&filters[title][$contains]=${query}`
+   const filterProducts = (products, query) => {
+    if (!query) return products; // Return all products if query is empty
+    return products.filter(product =>
+      product.title.toLowerCase().includes(query.toLowerCase())
     );
+  };
+
+  let data = filterProducts(homeProducts, query);
 
     if (!query.length) {
         data = null;
     }
+    console.log(data);
+    console.log(query);
+
+
 
     return (
         <div className="search-modal">
@@ -36,37 +46,34 @@ const Search = ({ setSearchModal }) => {
                 />
             </div>
             <div className="search-result-content">
-                {!data?.data?.length && (
+                {!data?.length && (
                     <div className="start-msg">
                         Start typing to see products you are looking for.
                     </div>
                 )}
                 <div className="search-results">
-                    {data?.data?.map((item) => (
+                    {data?.map((item) => (
                         <div
                             className="search-result-item"
                             key={item.id}
                             onClick={() => {
-                                navigate("/product/" + item.id);
+                                navigate("/product/" + item.title);
                                 setSearchModal(false);
                             }}
                         >
                             <div className="image-container">
                                 <img
                                     src={
-                                        process.env
-                                            .REACT_APP_STRIPE_APP_DEV_URL +
-                                        item.attributes.image.data[0].attributes
-                                            .url
+                                        item.image
                                     }
                                 />
                             </div>
                             <div className="prod-details">
                                 <span className="name">
-                                    {item.attributes.title}
+                                    {item.title}
                                 </span>
                                 <span className="desc">
-                                    {item.attributes.description}
+                                    {item.desc}
                                 </span>
                             </div>
                         </div>
