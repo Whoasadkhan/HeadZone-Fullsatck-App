@@ -17,9 +17,8 @@ const SingleProduct = () => {
     const [quantity, setQuantity] = useState(1);
     const { id } = useParams();
     const { fetchProducts, singleProduct, handleAddToCart } = useContext(Context);
-
     useEffect(() => {
-        fetchProducts({type:"single"}, id);
+        fetchProducts({type:"single", id});
     }, [id]);
 
     const decrement = () => {
@@ -29,19 +28,26 @@ const SingleProduct = () => {
     const increment = () => {
         setQuantity((prevState) => prevState + 1);
     };
+    
+   
+    if (!singleProduct) {
+        return <div>Loading...</div>; // You can replace this with a skeleton loader or other placeholder
+    }
 
 
     return (
+
         <div className="single-product-main-content">
+        
             <div className="layout">
                 <div className="single-product-page">
                     <div className="left">
-                        <img src={singleProduct[0].image} alt={singleProduct.title} />
+                        <img src={singleProduct.image} alt={singleProduct.title} />
                     </div>
                     <div className="right">
-                        <span className="name">{singleProduct[0].title}</span>
-                        <span className="price">&#8377;{singleProduct[0].price}</span>
-                        <span className="desc">{singleProduct[0].description}</span>
+                        <span className="name">{singleProduct.title}</span>
+                        <span className="price">&#8377;{singleProduct.price}</span>
+                        <span className="desc">{singleProduct.desc}</span>
 
                         <div className="cart-buttons">
                             <div className="quantity-buttons">
@@ -52,7 +58,7 @@ const SingleProduct = () => {
                             <button
                                 className="add-to-cart-button"
                                 onClick={() => {
-                                    handleAddToCart(singleProduct[0], quantity);
+                                    handleAddToCart(singleProduct, quantity);
                                     setQuantity(1);
                                 }}
                             >
@@ -65,7 +71,7 @@ const SingleProduct = () => {
                         <div className="info-item">
                             <span className="text-bold">
                                 Category:{" "}
-                                <span>{singleProduct[0].categories}</span>
+                                <span>{singleProduct.categories}</span>
                             </span>
                             <span className="text-bold">
                                 Share:
@@ -81,7 +87,7 @@ const SingleProduct = () => {
                     </div>
                 </div>
                 <RelatedProducts
-                    categoryId={singleProduct[0].categories}
+                    categoryId={singleProduct.categories}
                 />
             </div>
         </div>

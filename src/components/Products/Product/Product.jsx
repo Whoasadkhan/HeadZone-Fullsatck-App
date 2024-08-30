@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Product.scss";
 import { TbH1 } from "react-icons/tb";
 
-const Product = ({ data, id }) => {
+const Product = ({ data}) => {
     const navigate = useNavigate();
     return (
 
