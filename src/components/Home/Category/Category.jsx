@@ -19,9 +19,10 @@ const Category = () => {
     return (
         <div className="shop-by-category">
             <div className="categories">
-                {loading ? (Array(4).fill(<SkeletonCategory />))
-                :
-                   ( categories.map((item) => (
+            {loading ? (
+    Array(4).fill(null).map((_, index) => <SkeletonCategory key={index} />)
+) : (
+                    categories.map((item) => (
                     <div
                         key={item.id}
                         className="category"

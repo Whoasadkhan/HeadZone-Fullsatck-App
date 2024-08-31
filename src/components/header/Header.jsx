@@ -25,8 +25,7 @@ const Header = () => {
         window.addEventListener("scroll", handleScroll);
     }, []);
 
-    const { cartCount, showCart, setShowCart, showSuccessMessage } = useContext(Context);
-     console.log(showSuccessMessage);
+    const { cartCount, showCart, setShowCart } = useContext(Context);
     return (
         <>
             <header
