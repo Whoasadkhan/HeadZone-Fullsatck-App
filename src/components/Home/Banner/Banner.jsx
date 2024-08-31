@@ -9,7 +9,7 @@ const Banner = () => {
             <div className="content">
                 <div className="text-content">
                     <h1>HEAD</h1>
-                    <h1>ZONE</h1>
+                    <h2>ZONE</h2>
                     <p>
                         Convallis interdum purus adipiscing dis parturient
                         posuere ac a quam a eleifend montes parturient posuere

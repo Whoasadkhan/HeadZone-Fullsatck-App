@@ -25,8 +25,8 @@ const Header = () => {
         window.addEventListener("scroll", handleScroll);
     }, []);
 
-    const { cartCount, showCart, setShowCart } = useContext(Context);
-
+    const { cartCount, showCart, setShowCart, showSuccessMessage } = useContext(Context);
+     console.log(showSuccessMessage);
     return (
         <>
             <header
@@ -54,6 +54,7 @@ const Header = () => {
                     </div>
                 </div>
             </header>
+          
             {searchModal && <Search setSearchModal={setSearchModal} />}
             {showCart && <Cart />}
         </>

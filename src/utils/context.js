@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { createContext, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
 import { db } from "../FireBase/firebase"; // Import Firebase configuration
 import {
   getFirestore,
@@ -8,6 +9,7 @@ import {
   query,
   where,
   getDocs,
+  count,
 } from "firebase/firestore";
 
 export const Context = createContext();
@@ -29,19 +31,19 @@ const AppContext = ({ children }) => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
-
+  
   useEffect(() => {
     let count = 0;
-    cartItems?.map((item) => (count += item.attributes.quantity));
+    cartItems?.map((item) => (count += item.quantity));
     setCartCount(count);
 
     let subTotal = 0;
     cartItems.map(
-      (item) => (subTotal += item.attributes.price * item.attributes.quantity)
+      (item) => (subTotal += item.price * item.quantity)
     );
     setCartSubTotal(subTotal);
-  }, []);
-
+  }, [cartItems ]);
+  
   // Fetch Categories from Firebase
   useEffect(() => {
     const fetchCategories = async () => {
@@ -60,7 +62,7 @@ const AppContext = ({ children }) => {
     };
     fetchCategories();
   }, []);
-
+  
   // The main function that fetches products
   const fetchProducts = async ({ type, id, categoryId }) => {
     console.log(id);
@@ -68,7 +70,7 @@ const AppContext = ({ children }) => {
     console.log(categoryId);
     try {
       let productsQuery;
-
+      
       if (type === "home") {
         // Fetch all products for the home page
         productsQuery = query(collection(db, "products"));
@@ -92,13 +94,13 @@ const AppContext = ({ children }) => {
           where("title", "==", id)
         );
       }
-
+      
       const querySnapshot = await getDocs(productsQuery);
       const productsData = querySnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-
+      
       // Update the correct state based on the type
       if (type === "home") {
         setHomeProducts(productsData);
@@ -107,14 +109,14 @@ const AppContext = ({ children }) => {
       } else if (type === "relatedProducts") {
         // Fetch products by related category
         const filteredProducts = productsData.filter(product => product.id !== id);
-            setRelatedProducts(filteredProducts);
+        setRelatedProducts(filteredProducts);
       } else if (type === "single") {
         setSingleProduct(productsData[0]); // Assuming there's only one product for this ID
         fetchProducts({
           type: "relatedProducts",
           categoryId: productsData[0].categories,
           id: productsData[0].id, // Pass the single product ID to exclude it
-
+          
           
         } );
       }
@@ -124,16 +126,29 @@ const AppContext = ({ children }) => {
   };
   console.log(homeProducts);
 
+
   const handleAddToCart = (product, quantity) => {
     let items = [...cartItems];
     let index = items?.findIndex((p) => p.id === product?.id);
     if (index !== -1) {
-      items[index].attributes.quantity += quantity;
+      items[index].quantity += quantity;
     } else {
-      product.attributes.quantity = quantity;
+      product.quantity = quantity;
       items = [...items, product];
     }
     setCartItems(items);
+
+    toast.success("Item added successfully!", {
+      position: "bottom-right",
+      autoClose: 3000, // 3 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored", // or "light" / "dark" for different themes
+  });
+
   };
 
   const handleRemoveFromCart = (product) => {
@@ -146,10 +161,10 @@ const AppContext = ({ children }) => {
     let items = [...cartItems];
     let index = items?.findIndex((p) => p.id === product?.id);
     if (type === "inc") {
-      items[index].attributes.quantity += 1;
+      items[index].quantity += 1;
     } else if (type === "dec") {
-      if (items[index].attributes.quantity === 1) return;
-      items[index].attributes.quantity -= 1;
+      if (items[index].quantity === 1) return;
+      items[index].quantity -= 1;
     }
     setCartItems(items);
   };
