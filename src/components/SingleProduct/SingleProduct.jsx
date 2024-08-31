@@ -11,7 +11,6 @@ import {
     FaCartPlus,
 } from "react-icons/fa";
 import "./SingleProduct.scss";
-import { type } from "@testing-library/user-event/dist/type";
 
 const SingleProduct = () => {
     const [quantity, setQuantity] = useState(1);

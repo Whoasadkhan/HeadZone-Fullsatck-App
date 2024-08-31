@@ -4,7 +4,6 @@ import { BsCartX } from "react-icons/bs";
 import { Context } from "../../utils/context";
 import CartItem from "./CartItem/CartItem";
 import { loadStripe } from "@stripe/stripe-js";
-import { makePaymentRequest } from "../../utils/api";
 import { useNavigate } from "react-router-dom";
 
 
@@ -21,19 +20,19 @@ const Cart = () => {
     );
 
 
-    const handlePayment = async () => {
-        try {
-            const stripe = await stripePromise;
-            const res = await makePaymentRequest.post("/api/orders", {
-                products: cartItems,
-            });
-            await stripe.redirectToCheckout({
-                sessionId: res.data.stripeSession.id,
-            });
-        } catch (err) {
-            console.log(err);
-        }
-    };
+    // const handlePayment = async () => {
+    //     try {
+    //         const stripe = await stripePromise;
+    //         const res = await makePaymentRequest.post("/api/orders", {
+    //             products: cartItems,
+    //         });
+    //         await stripe.redirectToCheckout({
+    //             sessionId: res.data.stripeSession.id,
+    //         });
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // };
 
     return (
         <div className="cart-panel">

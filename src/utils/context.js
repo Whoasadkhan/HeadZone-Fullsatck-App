@@ -4,12 +4,11 @@ import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { db } from "../FireBase/firebase"; // Import Firebase configuration
 import {
-  getFirestore,
+  
   collection,
   query,
   where,
   getDocs,
-  count,
 } from "firebase/firestore";
 
 export const Context = createContext();
@@ -23,8 +22,6 @@ const AppContext = ({ children }) => {
   const [showCart, setShowCart] = useState(false);
   const [cartItems, setCartItems] = useState([]);
   const [cartCount, setCartCount] = useState(0);
-  const [categoryTitle, setCategoryTitle] = useState("");
-
   const [cartSubTotal, setCartSubTotal] = useState(0);
   const location = useLocation();
 
@@ -179,7 +176,6 @@ const AppContext = ({ children }) => {
         relatedProducts,
         fetchProducts,
         setCategories,
-        categoryTitle,
         cartItems,
         setCartItems,
         handleAddToCart,
