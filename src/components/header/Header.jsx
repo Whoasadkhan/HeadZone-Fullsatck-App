@@ -38,7 +38,7 @@ const Header = () => {
                         <li>Categories</li>
                     </ul>
                     <div className="center" onClick={() => navigate("/")}>
-                        HEADZONE.
+                        asad.
                     </div>
                     <div className="right">
                         <TbSearch onClick={() => setSearchModal(true)} />
